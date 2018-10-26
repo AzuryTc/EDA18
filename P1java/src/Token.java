@@ -10,7 +10,6 @@ public class Token {
 	}
 	
 	public Token(String p) {
-		
 		if (p!=null) {
 			pal=p;
 			frec=1;
@@ -18,6 +17,10 @@ public class Token {
 			 pal="";
 			 frec=0;	
 		}
+	}
+	public Token(Token t) {
+		frec=t.getFrecuencia();
+		pal=t.getPalabra();
 	}
 	
 	public String getPalabra() {

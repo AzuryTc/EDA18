@@ -15,35 +15,51 @@ public class Coleccion {
 		diccionarios= new ArrayList <String> ();
 	}
 	
-	public void leeDoc(String nFichero) throws IOException{
+	public void leeDoc(String nFichero){
+		
+
 		String categoria = null;
 		int id;
 		String linea="";
 		File archivo=null;
-		if(nFichero != null && nFichero.equals("")==false)  {
-			archivo= new File(nFichero+".txt");
+		Docum documento=null;
+		String separador="[,:;¿?¡!\\.() ]+";
+		String[] palabras=null;
+ 		if(nFichero != null && nFichero.equals("")==false)  {
+			archivo= new File(nFichero);
+			
+
 			try (BufferedReader bf = new BufferedReader(new FileReader(archivo))){
-				
-				while ((linea = bf.readLine())!=null) {
+				linea=bf.readLine();
+			
+				while (linea !=null) {
 					
 					if(linea.equalsIgnoreCase("<CAT>")) {
 						if((linea = bf.readLine())!=null){
 							categoria=linea;
+							id=documentos.size()+1;
+							documento= new Docum(id, categoria);
+						
 						}
-					}else if(linea.equalsIgnoreCase("<TEXTO>")) {
-						if((linea = bf.readLine())!=null){
+					}else  {
+						if((linea = bf.readLine())!=null && linea.equalsIgnoreCase("<TEXTO>")){
 							while((linea = bf.readLine())!=null && linea.equalsIgnoreCase("<CAT>")==false){
-								id=documentos.size();
-								Docum documento= new Docum(id, categoria);
-								documentos.add(documento);
-								documento.addToken(linea);
-							}						
+								
+								palabras=linea.split(separador);
+								 for(int x=0;x<palabras.length;x++) {
+								documento.addToken(palabras[x]);
+								 }
+							}
+							if(documento!=null) {
+							documentos.add(documento);
+							}
 						}
 					}	
 				}
 			} catch (IOException e) {
 			    e.printStackTrace();
 			}  
+			
 		}	
 	}// Fin de lee Doc
 	
@@ -51,7 +67,7 @@ public class Coleccion {
 		String linea="";
 		File archivo=null;
 		 if ( nTexto!=null && nTexto.equals("")==false) {
-			 archivo= new File(nTexto+".txt");
+			 archivo= new File(nTexto);
 				try (BufferedReader bf = new BufferedReader(new FileReader(archivo))){
 					while ((linea = bf.readLine())!=null) {
 						diccionarios.add(linea.toLowerCase());
@@ -73,7 +89,11 @@ public class Coleccion {
 			linea+=documentos.get(i).toString();
 		}
 		for(int i=0; i<diccionarios.size();i++) {
-			linea+=diccionarios.get(i).toString();
+			if(i==0) {
+				linea+=diccionarios.get(i).toString();
+			}else {
+			linea+=" "+diccionarios.get(i).toString();
+			}
 		}
 		
 		

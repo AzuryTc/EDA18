@@ -13,6 +13,7 @@ public class Docum {
 	//Constructores:
 	
 	public Docum() {
+
 		id=0;
 		cat="";
 		general= new ArrayList<Token> ();
@@ -21,6 +22,7 @@ public class Docum {
 	}
 	
 	public Docum( int identificador , String cadena) {
+	
 		id=identificador;
 		cat=cadena;
 		general= new ArrayList<Token> ();
@@ -60,31 +62,63 @@ public class Docum {
 	}
 	
 	
-	public int generaBasico(ArrayList<Token> diccionario) {
+	public int generaBasico(ArrayList<String> diccionario) {
 		int cantidad=0;
-	
-		for( int  i =0 ;i<general.size();i++) {
-			for (int j=0; j< diccionario.size();j++) {
-				if(general.get(i).equals(diccionario.get(j))==false) {
-					basico.add(diccionario.get(j));
-				}else {
-					cantidad++;
+		Token ayMamaQuePena=new Token();
+		boolean encuentra=false;
+		
+		
+		if(diccionario!=null) {
+			for( int  i =0 ;i<general.size();i++) {
+				
+				for (int j=0; j< diccionario.size()&& encuentra==false;j++) {
+					
+					if(general.get(i).getPalabra().equalsIgnoreCase(diccionario.get(j))) {
+						encuentra=true;
+					}
 				}
+				if(encuentra==false) {
+					
+					ayMamaQuePena=new Token(general.get(i));
+					
+					basico.add(ayMamaQuePena);
+					
+				}
+				else {cantidad++;
+				encuentra=false;}
 			}
 		}
 		return cantidad;
 	}
 	
 	public void addToken(String cadena) {
-		if (cadena!=null && cadena!="") {
-			for (int i = 0; i< general.size(); i ++) {
-				 if(general.get(i).getPalabra().equalsIgnoreCase(cadena)== true) {
-					general.get(i).masMas() ;
-				 }else {
-					 general.add(new Token(cadena.toLowerCase()));
-				 }
-			}
+		boolean encontrado=false;
+	 
+		if (general.size()==0) {
+			 general.add(new Token(cadena.toLowerCase()));
+			 
+
+			
+		}else {
+			
+				for (int i=0; i< general.size() && encontrado==false; i++) {			
+					
+					 if(general.get(i).getPalabra().equalsIgnoreCase(cadena)) {
+						general.get(i).masMas() ;
+						encontrado=true;
+
+					
+					 }						 
+					
+				}
+				
+				if(encontrado==false) {
+					general.add(new Token(cadena.toLowerCase()));
+					 encontrado=true;
+				}
+				
 		}
+	
 	}
 	
 	
@@ -136,10 +170,14 @@ public class Docum {
 	public String toString() {
 		String linea=id + "-"+cat+"\n";
 		
-		for( int i=0; i<basico.size();i++) {
-			linea+=basico.get(i).getPalabra();
+		for( int i=0; i<general.size();i++) {
+			linea+=general.get(i).toString();
 		}
-		
+		for( int i=0; i<basico.size();i++) {
+			
+			linea+=basico.get(i).toString();
+		}
+	
 		
 		return linea;
 	}

@@ -1,6 +1,5 @@
 // 77009175T JENIFER BOENTE PEREIRA
 
-import java.io.IOException;
 public class Recuperacion1 {
 	
 	
@@ -18,14 +17,15 @@ public class Recuperacion1 {
 		int auxFrec=-99;
 		
 		
-		try{
+	
 			for(int i=0; i <texto.length;i++) {
 				colecciones.leeDoc(texto[i]);
 			}
 
 			for(int j = 0 ; j< colecciones.getTexto().size(); j++) {
 					
-				//Conseguimos el token con mas frecuencia
+				//Conseguimos el token con mas frecuencia.
+				
 				sinNombre=colecciones.getTexto().get(j).masFrec();
 				
 				if(sinNombre.getFrecuencia()>auxFrec) {
@@ -42,13 +42,10 @@ public class Recuperacion1 {
 			palabra=elGranToken.getPalabra();
 			frecuencia=elGranToken.getFrecuencia();
 
-			System.out.println(id + categoria);
-			System.out.println(palabra +frecuencia );
+			System.out.println(id+" "+categoria);
+			System.out.println(palabra+" "+frecuencia );
 
-		}catch(IOException e){
-			System.err.println("Error con"+texto);
-			System.exit(0);
-		}
+		
 	}//Fin main
 }//Fin clase
 
